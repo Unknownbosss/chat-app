@@ -58,3 +58,9 @@
   font-size: 13px;
   color: #5c5c5c;
 }
+
+.login-toggle span {
+  font-weight: 500;
+  color: #077eff;
+  cursor: pointer;
+}

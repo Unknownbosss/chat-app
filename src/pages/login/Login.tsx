@@ -32,7 +32,7 @@ function Login() {
           <p>Agree to the terms of use & privacy policy.</p>
         </div>
         <div className="login-forgot">
-          <p className="loggin-toggle">
+          <p className="login-toggle">
             Already have an account <span>click here</span>
           </p>
         </div>
