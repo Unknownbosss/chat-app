@@ -3,6 +3,7 @@ import {
   DocumentData,
   getDoc,
   onSnapshot,
+  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { Context, createContext, ReactNode, useEffect, useState } from "react";
@@ -32,7 +33,7 @@ const defaultContextValue: AppContextType = {
   loadUserData: async () => {}, // Provide a no-op function
   messages: [], // Initialize as an empty array
   setMessages: () => {}, // Provide a no-op function
-  messagesId: '', // Initialize as an empty array
+  messagesId: "", // Initialize as an empty array
   setMessagesId: () => {}, // Provide a no-op function
   chatUser: null, // Initialize chatUser as null
   setChatUser: () => {}, // Provide a no-op function
@@ -64,7 +65,12 @@ export interface ChatData {
   userData: UserData;
 }
 
-export interface MessageType {}
+export interface MessageType {
+  sId: string;
+  text: string;
+  createdAt: Timestamp;
+  image: string
+}
 
 const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const navigate = useNavigate();
