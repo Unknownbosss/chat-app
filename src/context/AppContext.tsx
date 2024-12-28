@@ -63,6 +63,7 @@ export interface ChatData {
   rId: string;
   updatedAt: string;
   userData: UserData;
+  messageSeen: boolean;
 }
 
 export interface MessageType {

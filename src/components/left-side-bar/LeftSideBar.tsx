@@ -7,6 +7,7 @@ import {
   collection,
   doc,
   DocumentData,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -16,6 +17,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { AppContext, ChatData } from "../../context/AppContext";
+import { toast } from "react-toastify";
 
 function LeftSideBar() {
   const navigate = useNavigate();
@@ -90,8 +92,26 @@ function LeftSideBar() {
   };
 
   const setChat = async (chat: ChatData) => {
-    setMessagesId(chat.messageId);
-    setChatUser(chat);
+    try {
+      setMessagesId(chat.messageId);
+      setChatUser(chat);
+      if (userData?.id) {
+        const userChatRef = doc(db, "chats", userData.id);
+        const userChatSnapshot = await getDoc(userChatRef);
+        const userChatsData = userChatSnapshot.data();
+        const chatIndex = userChatsData?.chatsData.findIndex(
+          (c: ChatData) => c.messageId === chat.messageId
+        );
+        if (userChatsData?.chatsData[chatIndex]) {
+          userChatsData.chatsData[chatIndex].messageSeen = true;
+          await updateDoc(userChatRef, {
+            chatsData: userChatsData.chatsData,
+          });
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -102,7 +122,13 @@ function LeftSideBar() {
           <div className="menu">
             <img src={assets.menu_icon} alt="" />
             <div className="sub-menu">
-              <p onClick={() =>{ navigate("/profile")}}>Edit Profile</p>
+              <p
+                onClick={() => {
+                  navigate("/profile");
+                }}
+              >
+                Edit Profile
+              </p>
               <hr />
               <p>Log out</p>
             </div>
@@ -129,7 +155,11 @@ function LeftSideBar() {
               onClick={() => {
                 setChat(chat);
               }}
-              className="friends"
+              className={`friends ${
+                chat.messageSeen || chat.messageId === messagesId
+                  ? ""
+                  : "border"
+              }`}
               key={index}
             >
               <img src={chat.userData.avatar} alt="" />
