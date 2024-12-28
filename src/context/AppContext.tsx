@@ -12,18 +12,30 @@ import { useNavigate } from "react-router-dom";
 interface AppContextType {
   userData: UserData | null;
   setUserData: (data: UserData | null) => void;
-  chatData: ChatData | null;
-  setChatData: (data: ChatData | null) => void;
-  loadUserData: (uid: string) => Promise<void>; // Ensure this is defined
+  chatData: ChatData[];
+  setChatData: (data: ChatData[]) => void;
+  loadUserData: (uid: string) => Promise<void>;
+  messages: MessageType[];
+  setMessages: (data: MessageType[]) => void;
+  messagesId: string;
+  setMessagesId: (data: string) => void;
+  chatUser: ChatData | null; // Add this property
+  setChatUser: (data: ChatData | null) => void; // Add this property
 }
 
 // Create a default context value
 const defaultContextValue: AppContextType = {
   userData: null,
   setUserData: () => {}, // Provide a no-op function
-  chatData: null,
+  chatData: [], // Initialize as an empty array
   setChatData: () => {}, // Provide a no-op function
   loadUserData: async () => {}, // Provide a no-op function
+  messages: [], // Initialize as an empty array
+  setMessages: () => {}, // Provide a no-op function
+  messagesId: '', // Initialize as an empty array
+  setMessagesId: () => {}, // Provide a no-op function
+  chatUser: null, // Initialize chatUser as null
+  setChatUser: () => {}, // Provide a no-op function
 };
 
 // Create the context with a default value
@@ -44,16 +56,25 @@ export interface UserData {
   name: string;
   username: string;
 }
-interface ChatData {
+export interface ChatData {
+  lastMessage: string;
+  messageId: string;
+  rId: string;
   updatedAt: string;
+  userData: UserData;
 }
+
+export interface MessageType {}
 
 const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<UserData | null | DocumentData>(
     null
   );
-  const [chatData, setChatData] = useState<ChatData[] | null>(null);
+  const [chatData, setChatData] = useState<ChatData[]>([]);
+  const [messagesId, setMessagesId] = useState<string | null>(null);
+  const [messages, setMessages] = useState([]);
+  const [chatUser, setChatUser] = useState(null);
 
   const loadUserData = async (uid: string) => {
     try {
@@ -113,6 +134,12 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
     chatData,
     setChatData,
     loadUserData,
+    messages,
+    setMessages,
+    messagesId,
+    setMessagesId,
+    chatUser,
+    setChatUser,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
