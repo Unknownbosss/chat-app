@@ -115,7 +115,13 @@ function ProfileUpdate() {
           <button type="submit">Save</button>
         </form>
         <img
-          src={image ? URL.createObjectURL(image) : assets.logo_icon}
+          src={
+            image
+              ? URL.createObjectURL(image)
+              : prevImage
+              ? prevImage
+              : assets.logo_icon
+          }
           alt=""
           className="profile-pic"
         />

@@ -50,7 +50,7 @@ const signUp = async (username: string, email: string, password: string) => {
     });
 
     await setDoc(doc(db, "chats", user.uid), {
-      chatData: [],
+      chatsData: [],
     });
   } catch (error: any) {
     console.error("Error during sign up:", error); // Log the entire error

@@ -28,7 +28,6 @@ function App() {
       if (user) {
         navigate("/chat");
         await loadUserData(user.uid);
-        console.log(user);
       } else {
         navigate("/");
       }

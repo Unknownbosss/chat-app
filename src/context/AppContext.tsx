@@ -1,5 +1,11 @@
-import { doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
-import { Context, createContext, ReactNode, useState } from "react";
+import {
+  doc,
+  DocumentData,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import { Context, createContext, ReactNode, useEffect, useState } from "react";
 import { auth, db } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +27,8 @@ const defaultContextValue: AppContextType = {
 };
 
 // Create the context with a default value
-export const AppContext: Context<AppContextType> = createContext(defaultContextValue);
+export const AppContext: Context<AppContextType> =
+  createContext(defaultContextValue);
 
 // Define the provider component
 interface AppContextProviderProps {
@@ -37,14 +44,17 @@ export interface UserData {
   name: string;
   username: string;
 }
-interface ChatData {}
+interface ChatData {
+  updatedAt: string;
+}
 
 const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<UserData | null | DocumentData>(
     null
   );
-  const [chatData, setChatData] = useState<ChatData | null>(null);
+  const [chatData, setChatData] = useState<ChatData[] | null>(null);
+
   const loadUserData = async (uid: string) => {
     try {
       const userRef = doc(db, "users", uid);
@@ -68,7 +78,33 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
       }, 60_000);
     } catch (error) {}
   };
-  //2:43
+
+  useEffect(() => {
+    if (userData) {
+      const chatRef = doc(db, "chats", userData.id);
+      const unSub = onSnapshot(chatRef, async (res) => {
+        const chatData = res.data();
+        if (chatData) {
+          const chatItems = chatData.chatsData;
+          const tempData = [];
+          for (const item of chatItems) {
+            const userRef = doc(db, "users", item.rId);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.data();
+            tempData.push({ ...item, userData });
+          }
+          setChatData(
+            tempData.sort((a, b) => {
+              return b.updatedAt - a.updatedAt;
+            })
+          );
+        }
+      });
+      return () => {
+        unSub();
+      };
+    }
+  }, [userData]);
 
   // Initialize the context value
   const value: any = {
