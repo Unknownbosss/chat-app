@@ -1,32 +1,52 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./rightsidebar.css";
 import assets from "../../assets/assets";
 import { logOut } from "../../config/firebase";
+import { AppContext, ChatData } from "../../context/AppContext";
 
 function RightSideBar() {
-  return (
+  const { chatUser, messages } = useContext(AppContext);
+  const [msgImgs, setMsgImgs] = useState<string[]>([]);
+
+  useEffect(() => {
+    let tempVal: string[] = [];
+    messages.map((msg) => {
+      if (msg.image) {
+        tempVal.push(msg.image);
+      }
+    });
+    setMsgImgs(tempVal);
+  }, [messages]);
+
+  return chatUser ? (
     <div className="rs">
       <div className="rs-profile">
-        <img src={assets.profile_img} alt="" />
+        <img src={chatUser.userData.avatar} alt="" />
         <h3>
-          Unknown Boss
+          {chatUser.userData.name}
           <img src={assets.green_dot} alt="" />
         </h3>
-        <p>Hey. There i am using this app</p>
+        <p>{chatUser.userData.bio}</p>
       </div>
       <hr />
       <div className="rs-media">
         <p>Media</p>
         <div>
-          <img src={assets.pic1} alt="" />
-          <img src={assets.pic2} alt="" />
-          <img src={assets.pic3} alt="" />
-          <img src={assets.pic4} alt="" />
-          <img src={assets.pic1} alt="" />
-          <img src={assets.pic2} alt="" />
+          {msgImgs.map((imgUrl, i) => (
+            <img
+              src={imgUrl}
+              alt=""
+              key={i}
+              onClick={() => window.open(imgUrl)}
+            />
+          ))}
         </div>
       </div>
       <button onClick={() => logOut()}>Log Out</button>
+    </div>
+  ) : (
+    <div className="rs">
+      <button onClick={() => logOut()}>LogOut</button>
     </div>
   );
 }
