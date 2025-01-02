@@ -59,7 +59,7 @@ function Login() {
           {currentState === "Sign Up" ? "Create Accoount" : "Login Now"}
         </button>
         <div className="login-term">
-          <input type="checkbox" />
+          <input type="checkbox" checked/>
           <p>Agree to the terms of use & privacy policy.</p>
         </div>
         <div className="login-forgot">
