@@ -29,6 +29,7 @@ interface FirebaseConfig {
   measurementId?: string;
 }
 
+//Add your firebase config here
 const firebaseConfig: FirebaseConfig = {
   apiKey: "AIzaSyDIJR4rcZvHEVHmJoJPIZMM2tEpwcAO1ZA",
   authDomain: "chat-app-ac72a.firebaseapp.com",
@@ -62,7 +63,6 @@ const signUp = async (username: string, email: string, password: string) => {
       chatsData: [],
     });
   } catch (error: any) {
-    console.error("Error during sign up:", error); // Log the entire error
     toast.error(error.code.split("/")[1].split("-").join(" "));
   }
 };
@@ -104,26 +104,3 @@ const resetPass = async (email: string) => {
 };
 
 export { signUp, login, logOut, resetPass, auth, db };
-
-/* MINE 
-const firebaseConfig: FirebaseConfig = {
-  apiKey: "AIzaSyDIJR4rcZvHEVHmJoJPIZMM2tEpwcAO1ZA",
-  authDomain: "chat-app-ac72a.firebaseapp.com",
-  projectId: "chat-app-ac72a",
-  storageBucket: "chat-app-ac72a.firebasestorage.app",
-  messagingSenderId: "966309323159",
-  appId: "1:966309323159:web:43b9b88c75ffab797664d2",
-}; 
-
-his own
-
-const firebaseConfig: FirebaseConfig = {
-  apiKey: "AIzaSyDmaQyu6sZHep38z8L_eWgjEXfJxMnjLc",
-  authDomain: "chat-app-gs-57437.firebaseapp.com",
-  projectId: "chat-app-gs-57437",
-  storageBucket: "chat-app-gs-57437.appspot.com",
-  messagingSenderId: "832124750687",
-  appId: "1:832124750687:web:54d2483a0fac54633384ea",
-};
-
-*/
