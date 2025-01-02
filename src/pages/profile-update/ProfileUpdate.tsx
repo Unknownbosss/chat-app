@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../config/firebase";
 import { AppContext, UserData } from "../../context/AppContext";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import upload from "../../libs/upload";
 

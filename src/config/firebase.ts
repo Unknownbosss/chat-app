@@ -16,7 +16,6 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import { getAnalytics, Analytics } from "firebase/analytics";
 import { toast } from "react-toastify";
 
 interface FirebaseConfig {

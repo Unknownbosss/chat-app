@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import  { useContext, useEffect, useState } from "react";
 import "./rightsidebar.css";
 import assets from "../../assets/assets";
 import { logOut } from "../../config/firebase";
-import { AppContext, ChatData } from "../../context/AppContext";
+import { AppContext,  } from "../../context/AppContext";
 
 function RightSideBar() {
   const { chatUser, messages, profileVisible, setProfileVisible } =
