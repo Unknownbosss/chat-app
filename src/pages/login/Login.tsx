@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import "./login.css/";
 import assets from "../../assets/assets";
-import { signUp, login } from "../../config/firebase";
+import { signUp, login, resetPass } from "../../config/firebase";
 
 function Login() {
   const [currentState, setCurrentState] = useState<string>("Sign Up");
-  const [userName, setUserName] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [userName, setUserName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (currentState === 'Sign Up') {
-      signUp(userName, email, password)
+    e.preventDefault();
+    if (currentState === "Sign Up") {
+      signUp(userName, email, password);
     } else {
-      login(email, password)
+      login(email, password);
     }
-  }
-
+  };
 
   return (
     <div className="login">
@@ -26,7 +25,9 @@ function Login() {
         <h2>{currentState}</h2>
         {currentState === "Sign Up" ? (
           <input
-            onChange={(e) => { setUserName(e.target.value) }}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
             value={userName}
             type="text"
             placeholder="Username"
@@ -35,7 +36,9 @@ function Login() {
           />
         ) : null}
         <input
-          onChange={(e) => { setEmail(e.target.value) }}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
           value={email}
           type="email"
           placeholder="Email Address"
@@ -43,7 +46,9 @@ function Login() {
           required
         />
         <input
-          onChange={(e) => { setPassword(e.target.value) }}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
           value={password}
           type="password"
           placeholder="Password"
@@ -68,10 +73,16 @@ function Login() {
               Create an account
               <span onClick={() => setCurrentState("Sign Up")}>
                 {" "}
-                click here
+                Click here
               </span>
             </p>
           )}
+          {currentState === "Login" ? (
+            <p className="login-toggle">
+              Forgot Password
+              <span onClick={() => resetPass(email)}> Reset here </span>
+            </p>
+          ) : null}
         </div>
       </form>
     </div>

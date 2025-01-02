@@ -143,7 +143,9 @@ function Chatbox() {
         <img src={chatUser.userData.avatar} alt="" />
         <p>
           {chatUser.userData.name}
-          <img src={assets.green_dot} alt="" className="dot" />
+          {Date.now() - chatUser.userData.lastSeen < +70_000 ? (
+            <img src={assets.green_dot} alt="" className="dot" />
+          ) : null}
         </p>
         <img src={assets.help_icon} className="help" alt="" />
       </div>
