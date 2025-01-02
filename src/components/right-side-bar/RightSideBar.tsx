@@ -5,7 +5,8 @@ import { logOut } from "../../config/firebase";
 import { AppContext, ChatData } from "../../context/AppContext";
 
 function RightSideBar() {
-  const { chatUser, messages } = useContext(AppContext);
+  const { chatUser, messages, profileVisible, setProfileVisible } =
+    useContext(AppContext);
   const [msgImgs, setMsgImgs] = useState<string[]>([]);
 
   useEffect(() => {
@@ -19,9 +20,24 @@ function RightSideBar() {
   }, [messages]);
 
   return chatUser ? (
-    <div className="rs">
+    <div className={`rs ${profileVisible ? "" : "hidden"}`}>
+      <img
+        onClick={() => {
+          setProfileVisible(false);
+        }}
+        src={assets.arrow_icon}
+        alt=""
+        className="arrow"
+      />
       <div className="rs-profile">
-        <img src={chatUser.userData.avatar} alt="" />
+        <img
+          src={
+            chatUser.userData.avatar
+              ? chatUser.userData.avatar
+              : assets.default_profile
+          }
+          alt=""
+        />
         <h3>
           {chatUser.userData.name}
           {Date.now() - chatUser.userData.lastSeen < +70_000 ? (

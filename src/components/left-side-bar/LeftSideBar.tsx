@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./leftsidebar.css";
 import assets from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +28,8 @@ function LeftSideBar() {
     messagesId,
     chatUser,
     setChatUser,
+    chatVisible,
+    setChatVisible,
   } = useContext(AppContext);
   const [user, setUser] = useState<DocumentData | null>(null);
   const [showSearch, setShowSearch] = useState(false);
@@ -88,6 +90,20 @@ function LeftSideBar() {
           messageSeen: true,
         }),
       });
+
+      const uSnap = await getDoc(doc(db, "users", user?.id));
+      const uData = uSnap.data();
+      if (uData)
+        setChat({
+          messageId: newMessageRef.id,
+          lastMessage: "",
+          rId: user?.id,
+          updatedAt: Date.now().toString(),
+          messageSeen: true,
+          userData: uData,
+        });
+      setShowSearch(false);
+      setChatVisible(true);
     } catch (error: any) {}
   };
 
@@ -109,13 +125,29 @@ function LeftSideBar() {
           });
         }
       }
+      setChatVisible(true);
     } catch (error: any) {
       toast.error(error.message);
     }
   };
 
+  useEffect(() => {
+    const updateChatUserData = async () => {
+      if (chatUser) {
+        const userRef = doc(db, "users", chatUser.userData.id);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        if (userData) {
+          setChatUser((prev) => ({ ...prev, userData }));
+        }
+      }
+    };
+
+    updateChatUserData();
+  }, [chatData]);
+
   return (
-    <div className="ls">
+    <div className={`ls ${chatVisible ? "hidden" : ""}`}>
       <div className="ls-top">
         <div className="ls-nav">
           <img src={assets.logo} className="logo" alt="" width={""} />
@@ -146,7 +178,10 @@ function LeftSideBar() {
       <div className="ls-list">
         {showSearch && user ? (
           <div onClick={addChat} className="friends add-user">
-            <img src={user.avatar} alt="" />
+            <img
+              src={user.avatar ? user.avatar : assets.default_profile}
+              alt=""
+            />
             <p>{user.name}</p>
           </div>
         ) : (
@@ -162,7 +197,14 @@ function LeftSideBar() {
               }`}
               key={index}
             >
-              <img src={chat.userData.avatar} alt="" />
+              <img
+                src={
+                  chat.userData.avatar
+                    ? chat.userData.avatar
+                    : assets.default_profile
+                }
+                alt=""
+              />
               <div>
                 <p>{chat.userData.name}</p>
                 <span>{chat.lastMessage} </span>

@@ -15,8 +15,17 @@ import { toast } from "react-toastify";
 import upload from "../../libs/upload";
 
 function Chatbox() {
-  const { userData, messagesId, chatUser, messages, setMessages } =
-    useContext(AppContext);
+  const {
+    userData,
+    messagesId,
+    chatUser,
+    messages,
+    setMessages,
+    chatVisible,
+    setChatVisible,
+    profileVisible,
+    setProfileVisible,
+  } = useContext(AppContext);
   const [input, setInput] = useState<string>("");
   const ref = useRef<HTMLInputElement>(null);
 
@@ -138,16 +147,40 @@ function Chatbox() {
   }, [messagesId]);
 
   return chatUser ? (
-    <div className="chat-box">
+    <div
+      className={`chat-box ${chatVisible && !profileVisible ? "" : "hidden"}`}
+    >
       <div className="chat-user">
-        <img src={chatUser.userData.avatar} alt="" />
-        <p>
+        <img
+          src={
+            chatUser.userData.avatar
+              ? chatUser.userData.avatar
+              : assets.default_profile
+          }
+          alt=""
+          onClick={() => {
+            setProfileVisible(true);
+          }}
+        />
+        <p
+          onClick={() => {
+            setProfileVisible(true);
+          }}
+        >
           {chatUser.userData.name}
           {Date.now() - chatUser.userData.lastSeen < +70_000 ? (
             <img src={assets.green_dot} alt="" className="dot" />
           ) : null}
         </p>
         <img src={assets.help_icon} className="help" alt="" />
+        <img
+          onClick={() => {
+            setChatVisible(false);
+          }}
+          src={assets.arrow_icon}
+          alt=""
+          className="arrow"
+        />
       </div>
 
       <div className="chat-msg">
@@ -164,7 +197,11 @@ function Chatbox() {
                 src={
                   msg.sId === userData?.id
                     ? userData.avatar
+                      ? chatUser.userData.avatar
+                      : assets.default_profile
                     : chatUser.userData.avatar
+                    ? chatUser.userData.avatar
+                    : assets.default_profile
                 }
                 alt=""
               />
@@ -199,7 +236,7 @@ function Chatbox() {
       </div>
     </div>
   ) : (
-    <div className="chat-welcome">
+    <div className={`chat-welcome ${chatVisible ? "" : "hidden"}`}>
       <img src={assets.logo_icon} alt="" />
       <p>Chat Anytime, Anywhere</p>
     </div>

@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0px;
 }
 
 .profile-container {
@@ -14,6 +15,7 @@
   justify-content: space-between;
   min-width: 700px;
   border-radius: 10px;
+  margin: 5px;
 }
 
 .profile-pic {
@@ -62,4 +64,21 @@ textarea {
   background: #077eff;
   font-size: 16px;
   cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .profile-container {
+    flex-direction: column-reverse;
+    min-width: 320px;
+  }
+}
+@media (max-width: 350px) {
+  .profile-container {
+    flex-direction: column-reverse;
+    min-width: 300px;
+  }
+
+  .profile {
+    background-size: 100% 100%;
+  }
 }

@@ -2,6 +2,7 @@
   background: #001030;
   color: white;
   height: 75vh;
+  
 }
 
 .ls-top {
@@ -129,4 +130,10 @@
 
 .friends.border div span {
   color: #07fff3;
+}
+
+@media (max-width: 900px) {
+  .ls {
+    width: 100%;
+  }
 }

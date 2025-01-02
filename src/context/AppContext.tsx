@@ -21,7 +21,13 @@ interface AppContextType {
   messagesId: string;
   setMessagesId: (data: string) => void;
   chatUser: ChatData | null; // Add this property
-  setChatUser: (data: ChatData | null) => void; // Add this property
+  setChatUser: (
+    data: ChatData | ((prevState: ChatData) => ChatData | null)
+  ) => void;
+  chatVisible: boolean;
+  setChatVisible: (data: boolean) => void; // Add this property
+  profileVisible: boolean;
+  setProfileVisible: (data: boolean) => void; // Add this property
 }
 
 // Create a default context value
@@ -37,6 +43,10 @@ const defaultContextValue: AppContextType = {
   setMessagesId: () => {}, // Provide a no-op function
   chatUser: null, // Initialize chatUser as null
   setChatUser: () => {}, // Provide a no-op function
+  chatVisible: false, // Initialize chatUser as null
+  setChatVisible: () => {}, // Provide a no-op function
+  profileVisible: false, // Initialize chatUser as null
+  setProfileVisible: () => {}, // Provide a no-op function
 };
 
 // Create the context with a default value
@@ -62,7 +72,7 @@ export interface ChatData {
   messageId: string;
   rId: string;
   updatedAt: string;
-  userData: UserData;
+  userData: UserData | DocumentData;
   messageSeen: boolean;
 }
 
@@ -70,7 +80,7 @@ export interface MessageType {
   sId: string;
   text: string;
   createdAt: Timestamp;
-  image: string
+  image: string;
 }
 
 const AppContextProvider = ({ children }: AppContextProviderProps) => {
@@ -82,6 +92,8 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [messagesId, setMessagesId] = useState<string | null>(null);
   const [messages, setMessages] = useState([]);
   const [chatUser, setChatUser] = useState(null);
+  const [chatVisible, setChatVisible] = useState<boolean>(false);
+  const [profileVisible, setProfileVisible] = useState<boolean>(false);
 
   const loadUserData = async (uid: string) => {
     try {
@@ -147,6 +159,10 @@ const AppContextProvider = ({ children }: AppContextProviderProps) => {
     setMessagesId,
     chatUser,
     setChatUser,
+    chatVisible,
+    setChatVisible,
+    profileVisible,
+    setProfileVisible,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

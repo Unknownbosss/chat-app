@@ -11,6 +11,10 @@
   text-align: center;
   max-width: 20%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .rs-profile img {
@@ -33,6 +37,7 @@
   font-size: 12px;
   opacity: 0.8;
   font-weight: 300;
+  width: 150px;
 }
 
 .rs hr {
@@ -71,4 +76,23 @@
   padding: 10px 65px;
   border-radius: 20px;
   cursor: pointer;
+  text-wrap: nowrap;
+}
+
+@media (max-width: 900px) {
+  /* .rs {
+    display: none;
+  } */
+}
+
+.rs .arrow {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .rs .arrow {
+    display: block;
+    width: 30px;
+    margin: 10px;
+  }
 }
