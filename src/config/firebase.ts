@@ -30,6 +30,13 @@ interface FirebaseConfig {
 
 //Add your firebase config here
 const firebaseConfig: FirebaseConfig = {
+  
+  apiKey: "AIzaSyDIJR4rcZvHEVHmJoJPIZMM2tEpwcAO1ZA",
+  authDomain: "chat-app-ac72a.firebaseapp.com",
+  projectId: "chat-app-ac72a",
+  storageBucket: "chat-app-ac72a.firebasestorage.app",
+  messagingSenderId: "966309323159",
+  appId: "1:966309323159:web:43b9b88c75ffab797664d2",
 };
 
 // Initialize Firebase
